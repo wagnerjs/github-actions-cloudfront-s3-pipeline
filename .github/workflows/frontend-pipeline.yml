@@ -1,0 +1,43 @@
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+  jobs:
+    deployment:
+      name: Frontend Deployment
+      runs-on: ${{ matrix.os }}
+      strategy:
+        matrix:
+          node_version: ['22.x']
+          os: [ubuntu-latest]
+
+      steps:
+      - name: Configure AWS Credentials for China region audience
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: {{vars.AWS_REGION}}
+          role-to-assume: {{vars.AWS_ROLE_ARN_TO_ASSUME}}
+
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node_version }}
+
+      - name: Install
+        run: |
+          npm ci --silent
+
+      - name: Build
+        run: |
+          npm run build
+      
+      - name: Send build to S3
+        run: |
+          aws s3 sync ./out {{vars.AWS_S3_BUCKET_NAME}} --delete
+      
+      - name: Invalidate CloudFront Cache
+        run: |
+          aws cloudfront create-invalidation --distribution-id {{vars.AWS_CLODFRONT_DIST_ID}} --paths "/*"
+      
