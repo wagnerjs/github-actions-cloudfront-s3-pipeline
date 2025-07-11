@@ -40,7 +40,7 @@ jobs:
     
     - name: Send build to S3
       run: |
-        aws s3 sync ./out ${{vars.AWS_S3_BUCKET_NAME}} --delete
+        aws s3 sync ./out s3://${{vars.AWS_S3_BUCKET_NAME}} --delete
     
     - name: Invalidate CloudFront Cache
       run: |
