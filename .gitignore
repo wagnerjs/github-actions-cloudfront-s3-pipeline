@@ -43,3 +43,16 @@ Icon
 
 # macOS system files
 .DS_Store?
+
+# Terraform
+*.tfstate.backup
+.crash
+.terraform/
+*.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform.lock.hcl
+.terraformrc
+terraform.rc

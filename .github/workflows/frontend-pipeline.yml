@@ -44,5 +44,19 @@ jobs:
     
     - name: Invalidate CloudFront Cache
       run: |
-        aws cloudfront create-invalidation --distribution-id ${{vars.AWS_CLOUDFRONT_DIST_ID}} --paths "/*"
-      
+        TAG_NAME="Name"
+        TAG_VALUE="github-actions-cloudfront-s3-pipeline"
+
+        for id in $(aws cloudfront list-distributions --query "DistributionList.Items[].Id" --output text); do
+          ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          ARN="arn:aws:cloudfront::${ACCOUNT_ID}:distribution/${id}"
+
+          name_tag=$(aws cloudfront list-tags-for-resource --resource $ARN \
+            --query "Tags.Items[?Key=='${TAG_NAME}'].Value" --output text)
+
+          if [[ "$name_tag" == "$TAG_VALUE" ]]; then
+            echo "Found distribution ID: $id"
+            aws cloudfront create-invalidation --distribution-id $id --paths "/*"
+            break
+          fi
+        done
