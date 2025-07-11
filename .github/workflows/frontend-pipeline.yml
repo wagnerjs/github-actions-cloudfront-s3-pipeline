@@ -18,7 +18,7 @@ jobs:
         os: [ubuntu-latest]
 
     steps:
-    - name: Configure AWS Credentials for China region audience
+    - name: Configure AWS Credentials region audience
       uses: aws-actions/configure-aws-credentials@v4.1.0
       with:
         aws-region: ${{vars.AWS_REGION}}
@@ -44,5 +44,5 @@ jobs:
     
     - name: Invalidate CloudFront Cache
       run: |
-        aws cloudfront create-invalidation --distribution-id ${{vars.AWS_CLODFRONT_DIST_ID}} --paths "/*"
+        aws cloudfront create-invalidation --distribution-id ${{vars.AWS_CLOUDFRONT_DIST_ID}} --paths "/*"
       
