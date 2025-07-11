@@ -21,8 +21,8 @@ jobs:
     - name: Configure AWS Credentials for China region audience
       uses: aws-actions/configure-aws-credentials@v4.1.0
       with:
-        aws-region: {{vars.AWS_REGION}}
-        role-to-assume: {{vars.AWS_ROLE_ARN_TO_ASSUME}}
+        aws-region: ${{vars.AWS_REGION}}
+        role-to-assume: ${{vars.AWS_ROLE_ARN_TO_ASSUME}}
 
     - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node_version }}
@@ -40,9 +40,9 @@ jobs:
     
     - name: Send build to S3
       run: |
-        aws s3 sync ./out {{vars.AWS_S3_BUCKET_NAME}} --delete
+        aws s3 sync ./out ${{vars.AWS_S3_BUCKET_NAME}} --delete
     
     - name: Invalidate CloudFront Cache
       run: |
-        aws cloudfront create-invalidation --distribution-id {{vars.AWS_CLODFRONT_DIST_ID}} --paths "/*"
+        aws cloudfront create-invalidation --distribution-id ${{vars.AWS_CLODFRONT_DIST_ID}} --paths "/*"
       
