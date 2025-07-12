@@ -22,12 +22,19 @@ resource "aws_iam_role_policy" "this" {
         Effect = "Allow",
         Action = [
           "cloudfront:CreateInvalidation",
-          "cloudfront:ListDistributions",
           "cloudfront:ListTagsForResource"
         ],
         Resource = [
           aws_cloudfront_distribution.this.arn,
         ]
+      },
+      {
+        Sid    = "Statement3",
+        Effect = "Allow",
+        Action = [
+          "cloudfront:ListDistributions"
+        ],
+        Resource = "*"
       }
     ]
   })
