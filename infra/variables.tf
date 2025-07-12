@@ -55,3 +55,25 @@ variable "cloudfront" {
     name                   = "github-actions-cloudfront-s3-pipeline"
   }
 }
+
+variable "github_assume_role" {
+  type = object({
+    name = string
+    repo = string
+  })
+
+  default = {
+    name = "GitHubActionsPipeline"
+    repo = "wagnerjs/github-actions-cloudfront-s3-pipeline"
+  }
+}
+
+variable "github_assume_role_policy" {
+  type = object({
+    name = string
+  })
+
+  default = {
+    name = "CloudfrontS3Policy"
+  }
+}

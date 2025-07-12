@@ -1,5 +1,3 @@
-data "aws_caller_identity" "current" {}
-
 resource "aws_s3_bucket_policy" "this" {
   bucket = aws_s3_bucket.this.id
 
@@ -17,7 +15,7 @@ resource "aws_s3_bucket_policy" "this" {
         }
         Condition = {
           ArnLike = {
-            "AWS:SourceArn" = "arn:aws:cloudfront::${data.aws_caller_identity.current.account_id}:distribution/${aws_cloudfront_distribution.this.id}"
+            "AWS:SourceArn" = aws_cloudfront_distribution.this.arn
           }
         }
       },

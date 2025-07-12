@@ -47,6 +47,8 @@ jobs:
         TAG_NAME="Name"
         TAG_VALUE="github-actions-cloudfront-s3-pipeline"
 
+        found=0
+
         for id in $(aws cloudfront list-distributions --query "DistributionList.Items[].Id" --output text); do
           ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
           ARN="arn:aws:cloudfront::${ACCOUNT_ID}:distribution/${id}"
@@ -57,6 +59,15 @@ jobs:
           if [[ "$name_tag" == "$TAG_VALUE" ]]; then
             echo "Found distribution ID: $id"
             aws cloudfront create-invalidation --distribution-id $id --paths "/*"
+            found=1
             break
           fi
         done
+
+        if [[ $found -eq 1 ]]; then
+          echo "Sucesso: distribuição com a tag encontrada e invalidação criada."
+          exit 0
+        else
+          echo "Falha: nenhuma distribuição com a tag '$TAG_VALUE' encontrada."
+          exit 1
+        fi
