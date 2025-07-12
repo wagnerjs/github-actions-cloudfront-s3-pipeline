@@ -1,7 +1,33 @@
 # github-actions-cloudfront-s3-pipeline
 Resposistory for practice Github Actions with AWS S3 &amp; Cloudfront.
 
-## Configuration
+## Terraform
+
+To use Terraform in this project:
+
+1. Install [Terraform](https://www.terraform.io/downloads.html).
+2. Navigate to the `infra/` directory:
+    ```
+    cd infra
+    ```
+3. Initialize the Terraform workspace:
+    ```
+    terraform init
+    ```
+4. Review and customize the variables in `terraform.tfvars` or `variables.tf` as needed. Mandatory: `assume_role.role_arn`, `assume_role.external_id` and `github_assume_role.repo`
+5. Preview the changes:
+    ```
+    terraform plan
+    ```
+6. Apply the configuration to provision AWS resources:
+    ```
+    terraform apply
+    ```
+7. After deployment, note the outputs for S3 bucket and CloudFront distribution IDs.
+
+**Note:** Ensure your AWS credentials are configured locally or use OIDC as described below.
+
+## Manual Configuration
 
 ### Create S3 bucket
 
