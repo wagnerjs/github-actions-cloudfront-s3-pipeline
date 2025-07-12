@@ -49,9 +49,9 @@ variable "cloudfront" {
   default = {
     enabled                = true
     default_root_object    = "index.html"
-    allowed_methods        = ["GET", "HEAD", "OPTIONS"]
+    allowed_methods        = ["GET", "HEAD"]
     cached_methods         = ["GET", "HEAD"]
-    viewer_protocol_policy = "allow-all"
+    viewer_protocol_policy = "redirect-to-https"
     name                   = "github-actions-cloudfront-s3-pipeline"
   }
 }

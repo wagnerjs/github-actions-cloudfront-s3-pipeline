@@ -8,12 +8,9 @@ locals {
 
 resource "aws_cloudfront_distribution" "this" {
   origin {
-    domain_name = aws_s3_bucket.this.bucket_regional_domain_name
-    origin_id   = local.s3_origin_id
-
-    s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.this.cloudfront_access_identity_path
-    }
+    domain_name              = aws_s3_bucket.this.bucket_regional_domain_name
+    origin_access_control_id = aws_cloudfront_origin_access_control.this.id
+    origin_id                = local.s3_origin_id
   }
 
   enabled             = var.cloudfront.enabled
